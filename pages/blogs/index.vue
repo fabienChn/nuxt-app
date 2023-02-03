@@ -16,5 +16,10 @@
 </template>
 
 <script setup>
-  const { data: blogs } = await useFetch(`http://localhost:4000/blogs`);
+  const { apiUrl } = useRuntimeConfig().public;
+  const { data: blogs, error } = await useFetch(`${apiUrl}/blogs`);
+
+  if (error.value.statusCode === 401) {
+    navigateTo('/signup');
+  }
 </script>

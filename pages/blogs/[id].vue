@@ -10,8 +10,9 @@
 
 <script setup>
   const { id } = useRoute().params;
+  const { apiUrl } = useRuntimeConfig().public;
 
-  const { data: blog } = await useFetch(`http://localhost:4000/blogs/${id}`, { key: id });
+  const { data: blog } = await useFetch(`${apiUrl}/blogs/${id}`, { key: id });
 
   if (!blog.value) {
     throw createError({ statusCode: 404, statusMessage: 'Blog not found', fatal: true });

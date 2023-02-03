@@ -7,6 +7,7 @@
           <li><NuxtLink to="/">Home</NuxtLink></li>
           <li><NuxtLink to="/blogs">Blogs</NuxtLink></li>
           <li><NuxtLink to="/login">Login</NuxtLink></li>
+          <li><NuxtLink to="/signup">Signup</NuxtLink></li>
           <li><NuxtLink to="/logout" class="btn">Logout</NuxtLink></li>
         </ul>
       </nav>
