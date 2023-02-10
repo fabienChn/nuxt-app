@@ -8,7 +8,7 @@
           <li><NuxtLink to="/blogs">Blogs</NuxtLink></li>
           <li><NuxtLink to="/login">Login</NuxtLink></li>
           <li><NuxtLink to="/signup">Signup</NuxtLink></li>
-          <li><NuxtLink to="/logout" class="btn">Logout</NuxtLink></li>
+          <li><NuxtLink @click="logout" class="btn cursor-pointer">Logout</NuxtLink></li>
         </ul>
       </nav>
       </header>
@@ -18,6 +18,20 @@
       </div>
   </div>
 </template>
+
+<script setup>
+  const { apiUrl } = useRuntimeConfig().public;
+  const { resetAuth } = useAuth();
+
+  async function logout() {
+    await useFetch(`${apiUrl}/logout`, { 
+      method: 'POST',
+    });
+
+    resetAuth();
+    navigateTo('/login');
+  }
+</script>
 
 <style scoped>
   .router-link-exact-active {

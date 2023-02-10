@@ -9,6 +9,10 @@
 </template>
 
 <script setup>
+  definePageMeta({  
+    middleware: 'auth',
+  })
+
   const { id } = useRoute().params;
   const { apiUrl } = useRuntimeConfig().public;
 

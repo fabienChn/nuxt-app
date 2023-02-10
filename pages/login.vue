@@ -22,6 +22,10 @@
 </template>
 
 <script setup>
+  definePageMeta({  
+    middleware: 'guest',
+  })
+
   const form = ref({
     email: 'ninja@gmail.com',
     password: 'test123',
@@ -34,11 +38,13 @@
 
   async function submit() {
     const { apiUrl } = useRuntimeConfig().public;
+    const { initAuth } = useAuth();
 
     resetErrors();
 
     const { data } = await useFetch(`${apiUrl}/login`, { 
       method: 'POST',
+      credentials: 'include',
       body: {
         email: form.value.email,
         password: form.value.password,
@@ -49,6 +55,7 @@
     });
 
     if (data.value?.user) {
+      initAuth(data.value?.user);
       navigateTo('/');
     }
   }

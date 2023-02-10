@@ -22,6 +22,10 @@
 </template>
 
 <script setup>
+  definePageMeta({  
+    middleware: 'guest',
+  })
+
   const form = ref({
     email: 'ninja@gmail.com',
     password: 'test123',
@@ -34,6 +38,7 @@
 
   async function submit() {
     const { apiUrl } = useRuntimeConfig().public;
+    const { initAuth } = useAuth();
 
     resetErrors();
 
@@ -49,6 +54,7 @@
     });
 
     if (data.value?.user) {
+      initAuth(data.value?.user);
       navigateTo('/');
     }
   }

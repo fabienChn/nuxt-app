@@ -11,15 +11,20 @@
     <NuxtLink class="btn" to="/blogs/create">
       Create Post
     </NuxtLink>
-
   </div>
 </template>
 
 <script setup>
-  const { apiUrl } = useRuntimeConfig().public;
-  const { data: blogs, error } = await useFetch(`${apiUrl}/blogs`);
+  definePageMeta({  
+    middleware: 'auth',
+  })
 
-  if (error.value.statusCode === 401) {
-    navigateTo('/signup');
+  const { apiUrl } = useRuntimeConfig().public;
+  const { data: blogs, error } = await useFetch(`${apiUrl}/blogs`, {
+    credentials: 'include',
+  });
+
+  if (error?.value?.statusCode === 401) {
+    navigateTo('/login');
   }
 </script>
