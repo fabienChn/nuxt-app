@@ -17,7 +17,7 @@
 <script setup>
   definePageMeta({  
     middleware: 'auth',
-  })
+  });
 
   const { apiUrl } = useRuntimeConfig().public;
   const { data: blogs, error } = await useFetch(`${apiUrl}/blogs`, {

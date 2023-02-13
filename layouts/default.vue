@@ -5,10 +5,13 @@
         <NuxtLink to="/" class="font-bold">My App</NuxtLink>
         <ul class="flex gap-4">
           <li><NuxtLink to="/">Home</NuxtLink></li>
-          <li><NuxtLink to="/blogs">Blogs</NuxtLink></li>
-          <li><NuxtLink to="/login">Login</NuxtLink></li>
-          <li><NuxtLink to="/signup">Signup</NuxtLink></li>
-          <li><NuxtLink @click="logout" class="btn cursor-pointer">Logout</NuxtLink></li>
+          <li v-if="getIsLoggedIn()"><NuxtLink to="/conversations">Conversations</NuxtLink></li>
+          <li v-if="getIsLoggedIn()"><NuxtLink to="/blogs">Blogs</NuxtLink></li>
+          <li v-if="!getIsLoggedIn()"><NuxtLink to="/login">Login</NuxtLink></li>
+          <li v-if="!getIsLoggedIn()"><NuxtLink to="/signup">Signup</NuxtLink></li>
+          <li v-if="getIsLoggedIn()">
+            <NuxtLink @click="logout" class="btn cursor-pointer">Logout</NuxtLink>
+          </li>
         </ul>
       </nav>
       </header>
@@ -21,7 +24,7 @@
 
 <script setup>
   const { apiUrl } = useRuntimeConfig().public;
-  const { resetAuth } = useAuth();
+  const { getIsLoggedIn, resetAuth } = useAuth();
 
   async function logout() {
     await useFetch(`${apiUrl}/logout`, { 

@@ -1,23 +1,28 @@
 export default function useAuth() {
-  const authCookie = useCookie('auth', { sameSite: true });
-
-  const auth = useState('auth', () => authCookie.value);
-
   const initAuth = (data) => {
-    authCookie.value = JSON.stringify(data);
+    const authCookie = useCookie('auth', { sameSite: true });
 
-    auth.value = data;
+    authCookie.value = JSON.stringify(data);
   };
 
   const resetAuth = () => {
+    const authCookie = useCookie('auth');
+    
     authCookie.value = null;
+  };
+  
+  const getAuth = () => {
+    return useCookie('auth');
+  };
 
-    auth.value = null;
-  }
+  const getIsLoggedIn = () => {
+    return Boolean(useCookie('auth')?.value?.id);
+  };
 
   return {
-    auth,
-    isLoggedIn: Boolean(auth?.value?.id),
+    isLoggedIn: getIsLoggedIn(),
+    getIsLoggedIn,
+    getAuth,
     initAuth,
     resetAuth,
   };

@@ -17,6 +17,13 @@
       v-model="form.password" 
     />
     <div class="text-red-500">{{ form.errors.password }}</div>
+    <input 
+      required 
+      placeholder="Name"
+      :class="{'border-red-500': form.errors.name}"
+      v-model="form.name" 
+    />
+    <div class="text-red-500">{{ form.errors.name }}</div>
     <button type="submit" class="btn">Sign up</button>
   </form>
 </template>
@@ -27,8 +34,9 @@
   })
 
   const form = ref({
-    email: 'ninja@gmail.com',
+    email: 'fabien@gmail.com',
     password: 'test123',
+    name: 'Fabien',
     errors: {},
   });
 
@@ -44,9 +52,11 @@
 
     const { data } = await useFetch(`${apiUrl}/signup`, { 
       method: 'POST',
+      credentials: 'include',
       body: {
         email: form.value.email,
         password: form.value.password,
+        name: form.value.name,
       },
       onResponseError({ response }) {
         form.value.errors = response._data.errors;

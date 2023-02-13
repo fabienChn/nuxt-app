@@ -27,7 +27,7 @@
   })
 
   const form = ref({
-    email: 'ninja@gmail.com',
+    email: 'fabien@gmail.com',
     password: 'test123',
     errors: {},
   });
