@@ -6,7 +6,6 @@
         <ul class="flex gap-4">
           <li><NuxtLink to="/">Home</NuxtLink></li>
           <li v-if="getIsLoggedIn()"><NuxtLink to="/conversations">Conversations</NuxtLink></li>
-          <li v-if="getIsLoggedIn()"><NuxtLink to="/blogs">Blogs</NuxtLink></li>
           <li v-if="!getIsLoggedIn()"><NuxtLink to="/login">Login</NuxtLink></li>
           <li v-if="!getIsLoggedIn()"><NuxtLink to="/signup">Signup</NuxtLink></li>
           <li v-if="getIsLoggedIn()">
@@ -23,14 +22,9 @@
 </template>
 
 <script setup>
-  const { apiUrl } = useRuntimeConfig().public;
   const { getIsLoggedIn, resetAuth } = useAuth();
 
   async function logout() {
-    await useFetch(`${apiUrl}/logout`, { 
-      method: 'POST',
-    });
-
     resetAuth();
     navigateTo('/login');
   }

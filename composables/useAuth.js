@@ -1,8 +1,19 @@
 export default function useAuth() {
-  const initAuth = (data) => {
-    const authCookie = useCookie('auth', { sameSite: true });
+  const initAuth = async (token) => {
+    const authCookie = useCookie('auth', { sameSite: true, watch: true });
 
-    authCookie.value = JSON.stringify(data);
+    const user = await useRequest('users/me', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    });
+
+    const data = {
+      token,
+      user,
+    };
+
+    authCookie.value = data;
   };
 
   const resetAuth = () => {
@@ -10,19 +21,39 @@ export default function useAuth() {
     
     authCookie.value = null;
   };
-  
+
   const getAuth = () => {
-    return useCookie('auth');
-  };
+    const authCookie = useCookie('auth');
+
+    if (authCookie.value?.token && !authCookie.value?.user) {
+      throw new Error('Auth has a token but no user');
+    }
+
+    return authCookie;
+  }
+  
+  const getAuthToken = () => getAuth()?.value?.token;
+  
+  const getAuthUser = () => getAuth()?.value?.user;
 
   const getIsLoggedIn = () => {
-    return Boolean(useCookie('auth')?.value?.id);
+    const authCookie = useCookie('auth');
+
+    const { token, user } = authCookie?.value ?? {};
+
+    if (token && !user) {
+      throw new Error('Auth has a token but no user');
+    }
+
+    return token;
   };
 
   return {
     isLoggedIn: getIsLoggedIn(),
     getIsLoggedIn,
+    getAuthUser,
     getAuth,
+    getAuthToken,
     initAuth,
     resetAuth,
   };

@@ -50,9 +50,8 @@
 
     resetErrors();
 
-    const { data } = await useFetch(`${apiUrl}/signup`, { 
+    const { data } = await useRequest('auth/signup', { 
       method: 'POST',
-      credentials: 'include',
       body: {
         email: form.value.email,
         password: form.value.password,
@@ -63,8 +62,8 @@
       },
     });
 
-    if (data.value?.user) {
-      initAuth(data.value?.user);
+    if (data.value?.access_token) {
+      await initAuth(data.value?.access_token);
       navigateTo('/');
     }
   }

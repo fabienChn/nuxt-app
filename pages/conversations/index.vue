@@ -2,12 +2,15 @@
   <div>
     <h2 class="text-xl">Conversations</h2>
 
-    <div v-for="message in messages" :key="message">
-      <p>{{ message }}</p>
+    <button class="btn" @click="initUsers">New Conversation</button>
+
+    <div v-for="user in users" :key="user.id" @click="createConversation(user.id)">
+      {{ user.id }}: {{ user.name }}
     </div>
 
-    <input v-model="inputValue" placeholder="message..." @keydown.enter="sendMessage" autofocus />
-    <button class="btn" @click="sendMessage">Send</button>
+    <div v-for="conversation in conversations" :key="conversation.id">
+      <p>{{ conversation.id }}</p>
+    </div>
   </div>
 </template>
 
@@ -16,43 +19,35 @@
     middleware: 'auth',
   });
 
-  const { apiUrl } = useRuntimeConfig().public;
-
-  fetchConversations();
-  
-  const { $socketioClient } = useNuxtApp();
-
-  const inputValue = ref('');
-  const messages = ref([
-    'Hello',
-    'hey',
-    'how are you',
-    'good and you???',
-  ])
-
-  const { io } = $socketioClient;
-  const socket = io(apiUrl, { withCredentials: true });
-
-  socket.on('message', (message) => {
-    messages.value.push(message);
-  });
-
-  function sendMessage() {
-    socket.emit('chatMessage', inputValue.value);
-    inputValue.value = '';
-  }
+  const conversations = await fetchConversations();
+  const users = ref();
 
   async function fetchConversations() {
-    const { data: conversations, error } = await useFetch(`${apiUrl}/conversations`, {
-      credentials: 'include',
+    const { data } = await useRequest('conversations');
+    
+    return data;
+  }
+
+  async function initUsers() {
+    const { data } = await useRequest('users');
+    
+    users.value = data.value;
+  }
+
+  async function createConversation(userId) {
+    const { data } = await useRequest('conversation', {
+      method: 'POST',
+      body: {
+        userId,
+      }
     });
-  
-    if (error?.value?.statusCode === 401) {
-      navigateTo('/login');
+
+    if (data) {
+      console.log({
+        data
+      });
+
+      navigateTo(`/conversations/${data.id}`);
     }
-
-    console.log({ conversations });
-
-    return conversations;
   }
 </script>

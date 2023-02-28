@@ -17,11 +17,9 @@
   });
 
   const { id } = useRoute().params;
-  const { apiUrl } = useRuntimeConfig().public;
 
   fetchMessages();
   
-  const { $socketioClient } = useNuxtApp();
 
   const inputValue = ref('');
   const messages = ref([
@@ -31,32 +29,33 @@
     'good and you???',
   ])
 
+  const { $socketioClient } = useNuxtApp();
   const { io } = $socketioClient;
-  const socket = io(apiUrl, { withCredentials: true });
+  const { apiUrl } = useRuntimeConfig().public;
+  const socket = io(apiUrl, { 
+    query: {
+      token: getAuthToken(),
+    },
+    withCredentials: true,
+   });
 
   socket.on('message', (message) => {
+    console.log({ message });
     messages.value.push(message);
   });
 
   function sendMessage() {
-    socket.emit('chatMessage', inputValue.value);
+    socket.emit('message', {
+      text: inputValue.value,
+      conversationId: id,
+    });
     inputValue.value = '';
   }
 
   async function fetchMessages() {
-    const { data, error } = await useFetch(`${apiUrl}/conversations/${id}`, {
-      credentials: 'include',
+    const { data } = await useRequest(`message/${id}`, {
       key: id,
     });
-  
-    if (error?.value) {
-      console.log('ERRORRRR', error?.value?.statusCode);
-    }
-    
-    if (error?.value?.statusCode === 401) {
-      console.log(error);
-      // navigateTo('/login');
-    }
 
     console.log({ data });
 
