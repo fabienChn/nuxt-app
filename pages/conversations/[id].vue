@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h2 class="text-xl">Messages with {TODO}</h2>
+    <h2 class="text-xl">
+      Messages with {{ conversation?.users?.filter(user => user.id != getAuth()?.value?.user?.id)[0].name }}
+    </h2>
 
     <div v-for="message in messages" :key="message">
       <p>{{ message }}</p>
@@ -16,31 +18,25 @@
     middleware: 'auth',
   });
 
+  const { getAuth } = useAuth();
   const { id } = useRoute().params;
 
-  fetchMessages();
+  const conversation = await fetchConversation();
+  const messages = await fetchMessages();
   
-
   const inputValue = ref('');
-  const messages = ref([
-    'Hello',
-    'hey',
-    'how are you',
-    'good and you???',
-  ])
-
+  
   const { $socketioClient } = useNuxtApp();
   const { io } = $socketioClient;
   const { apiUrl } = useRuntimeConfig().public;
   const socket = io(apiUrl, { 
     query: {
-      token: getAuthToken(),
+      token: getAuth()?.value?.token,
     },
     withCredentials: true,
    });
 
   socket.on('message', (message) => {
-    console.log({ message });
     messages.value.push(message);
   });
 
@@ -52,12 +48,25 @@
     inputValue.value = '';
   }
 
-  async function fetchMessages() {
-    const { data } = await useRequest(`message/${id}`, {
+  async function fetchConversation() {
+    const { data } = await useRequest(`conversations/${id}`, {
       key: id,
     });
 
-    console.log({ data });
+    console.log({
+      conversation: data.value,
+    })
+    return data;
+  }
+
+  async function fetchMessages() {
+    const { data } = await useRequest(`messages/${id}`, {
+      key: id,
+    });
+
+    console.log({
+      messages: data.value,
+    })
 
     return data;
   }

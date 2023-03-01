@@ -1,8 +1,8 @@
 export default async function useRequest(path, options = {}) {
   const { apiUrl } = useRuntimeConfig().public;
-  const { getAuthToken } = useAuth();
+  const { getAuth, resetAuth } = useAuth();
 
-  const token = getAuthToken();
+  const token = getAuth()?.value?.token;
 
   const response = await useFetch(`${apiUrl}/${path}`, {
     credentials: 'include',
@@ -14,6 +14,7 @@ export default async function useRequest(path, options = {}) {
   });
 
   if (response?.error?.value?.statusCode === 401) {
+    resetAuth();
     navigateTo('/login');
   }
 

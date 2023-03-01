@@ -32,8 +32,6 @@ export default function useAuth() {
     return authCookie;
   }
   
-  const getAuthToken = () => getAuth()?.value?.token;
-  
   const getAuthUser = () => getAuth()?.value?.user;
 
   const getIsLoggedIn = () => {
@@ -53,7 +51,6 @@ export default function useAuth() {
     getIsLoggedIn,
     getAuthUser,
     getAuth,
-    getAuthToken,
     initAuth,
     resetAuth,
   };

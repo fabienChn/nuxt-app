@@ -8,7 +8,7 @@
       {{ user.id }}: {{ user.name }}
     </div>
 
-    <div v-for="conversation in conversations" :key="conversation.id">
+    <div v-for="conversation in conversations" :key="conversation.id" @click="navigateToConversation(conversation.id)">
       <p>{{ conversation.id }}</p>
     </div>
   </div>
@@ -35,19 +35,19 @@
   }
 
   async function createConversation(userId) {
-    const { data } = await useRequest('conversation', {
+    const { data } = await useRequest('conversations', {
       method: 'POST',
       body: {
-        userId,
+        userIds: [userId],
       }
     });
 
-    if (data) {
-      console.log({
-        data
-      });
-
-      navigateTo(`/conversations/${data.id}`);
+    if (data?.value) {
+      navigateToConversation(data?.value?.id);
     }
+  }
+
+  function navigateToConversation(conversationId) {
+    navigateTo(`/conversations/${conversationId}`);
   }
 </script>
