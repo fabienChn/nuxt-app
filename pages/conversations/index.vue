@@ -9,7 +9,7 @@
     </div>
 
     <div v-for="conversation in conversations" :key="conversation.id" @click="navigateToConversation(conversation.id)">
-      <p>{{ conversation.id }}</p>
+      <p>{{ conversation.id }} - {{  conversation.users[0].user.name }}</p>
     </div>
   </div>
 </template>
