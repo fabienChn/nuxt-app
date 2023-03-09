@@ -10,6 +10,10 @@ input {
   @apply border-2 p-2 rounded-md;
 }
 
+.title {
+  @apply text-3xl mb-4;
+}
+
 @layer components {
   .btn {
     @apply bg-[green] text-white px-3 py-2 rounded-md text-sm text-white;

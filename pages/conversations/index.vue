@@ -1,15 +1,29 @@
 <template>
   <div>
-    <h2 class="text-xl">Conversations</h2>
+    <h2 class="title">Conversations</h2>
 
-    <button class="btn" @click="initUsers">New Conversation</button>
+    <button class="btn" @click="toggleUsers">
+      New Conversation
+    </button>
 
-    <div v-for="user in users" :key="user.id" @click="createConversation(user.id)">
+    <div 
+      v-for="user in users" 
+      :key="user.id" 
+      @click="createConversation(user.id)"
+      class="cursor-pointer"
+    >
       {{ user.id }}: {{ user.name }}
     </div>
 
-    <div v-for="conversation in conversations" :key="conversation.id" @click="navigateToConversation(conversation.id)">
-      <p>{{ conversation.id }} - {{  conversation.users[0].user.name }}</p>
+    <div class="flex flex-col gap-3 mt-4">
+      <div 
+        v-for="conversation in conversations" 
+        :key="conversation.id" 
+        @click="navigateToConversation(conversation.id)"
+        class="conversation" 
+      >
+        {{ conversation.id }} - {{  conversation.users[0].user.name }}
+      </div>
     </div>
   </div>
 </template>
@@ -26,6 +40,16 @@
     const { data } = await useRequest('conversations');
     
     return data;
+  }
+
+  function toggleUsers() {
+    if (users?.value?.length) {
+      users.value = null;
+
+      return;
+    }
+
+    initUsers();
   }
 
   async function initUsers() {
@@ -51,3 +75,9 @@
     navigateTo(`/conversations/${conversationId}`);
   }
 </script>
+
+<style scoped>
+.conversation {
+  @apply border-2 rounded-lg p-5 cursor-pointer hover:border-orange-200 hover:font-semibold;
+}
+</style>

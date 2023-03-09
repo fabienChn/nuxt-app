@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="text-xl">
+    <h2 class="title">
       Messages with {{ conversation?.users?.filter(user => user.id != getAuth()?.value?.user?.id)[0].name }}
     </h2>
 
