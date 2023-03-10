@@ -22,7 +22,7 @@
         @click="navigateToConversation(conversation.id)"
         class="conversation" 
       >
-        {{ conversation.id }} - {{  conversation.users[0].user.name }}
+        {{ conversation.id }} - {{ conversation.users[0].user.name }}
       </div>
     </div>
   </div>

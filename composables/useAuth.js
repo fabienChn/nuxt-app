@@ -32,7 +32,7 @@ export default function useAuth() {
     return authCookie;
   }
   
-  const getAuthUser = () => getAuth()?.value?.user;
+  const getAuthUser = () => getAuth()?.value?.user?.data;
 
   const getIsLoggedIn = () => {
     const authCookie = useCookie('auth');
