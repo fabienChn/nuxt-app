@@ -14,6 +14,7 @@
         :title="
           useNuxtApp().$dayjs(message.created_at).format('YYYY-MM-DD HH:mm')
         "
+        data-test="message"
         class="flex"
         :class="{ 'justify-end': isAuthsMessage(message) }"
       >

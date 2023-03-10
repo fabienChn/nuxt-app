@@ -64,7 +64,9 @@ async function createConversation(userId) {
     },
   });
 
+  alert("clicking!");
   if (data?.value) {
+    alert("redirecting!");
     navigateToConversation(data?.value?.id);
   }
 }

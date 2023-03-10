@@ -29,8 +29,8 @@ definePageMeta({
 });
 
 const form = ref({
-  email: "fabien@gmail.com",
-  password: "test123",
+  email: "",
+  password: "",
   errors: {},
 });
 
