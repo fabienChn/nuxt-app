@@ -2,36 +2,49 @@
   <div>
     <header class="shadow-sm bg-white">
       <nav class="container mx-auto p-4 flex justify-between">
-        <NuxtLink to="/" class="font-bold">My App</NuxtLink>
+        <NuxtLink to="/" class="font-bold">Messenger App</NuxtLink>
         <ul class="flex gap-4">
           <li><NuxtLink to="/">Home</NuxtLink></li>
-          <li v-if="getIsLoggedIn()"><NuxtLink to="/conversations">Conversations</NuxtLink></li>
-          <li v-if="!getIsLoggedIn()"><NuxtLink to="/login">Login</NuxtLink></li>
-          <li v-if="!getIsLoggedIn()"><NuxtLink to="/signup">Signup</NuxtLink></li>
-          <li v-if="getIsLoggedIn()">
-            <NuxtLink @click="logout" class="btn cursor-pointer">Logout</NuxtLink>
+          <li v-if="authStore.isLoggedIn()">
+            <NuxtLink to="/conversations">Conversations</NuxtLink>
+          </li>
+          <li v-if="!authStore.isLoggedIn()">
+            <NuxtLink to="/login">Login</NuxtLink>
+          </li>
+          <li v-if="!authStore.isLoggedIn()">
+            <NuxtLink to="/signup">Signup</NuxtLink>
+          </li>
+          <li v-if="authStore.isLoggedIn()">
+            {{ authStore.user?.name }}
+          </li>
+          <li v-if="authStore.isLoggedIn()">
+            <NuxtLink class="btn cursor-pointer" @click="logout"
+              >Logout</NuxtLink
+            >
           </li>
         </ul>
       </nav>
-      </header>
+    </header>
 
-      <div class="container mx-auto p-4">
-        <slot />
-      </div>
+    <div class="container mx-auto p-4">
+      <slot />
+    </div>
   </div>
 </template>
 
 <script setup>
-  const { getIsLoggedIn, resetAuth } = useAuth();
+const authStore = useAuthStore();
 
-  async function logout() {
-    resetAuth();
-    navigateTo('/login');
-  }
+authStore.loadAuth();
+
+function logout() {
+  authStore.resetAuth();
+  navigateTo("/login");
+}
 </script>
 
 <style scoped>
-  .router-link-exact-active {
-    color: green;
-  }
+.router-link-exact-active {
+  color: green;
+}
 </style>

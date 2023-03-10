@@ -1,21 +1,21 @@
 export default async function useRequest(path, options = {}) {
   const { apiUrl } = useRuntimeConfig().public;
-  const { getAuth, resetAuth } = useAuth();
-
-  const token = getAuth()?.value?.token;
+  const authStore = useAuthStore();
 
   const response = await useFetch(`${apiUrl}/${path}`, {
-    credentials: 'include',
+    credentials: "include",
     ...options,
-    headers: token ? {
-      Authorization: `Bearer ${token}`,
-      ...options.headers,
-    } : options.headers,
+    headers: authStore.token
+      ? {
+          Authorization: `Bearer ${authStore.token}`,
+          ...options.headers,
+        }
+      : options.headers,
   });
 
   if (response?.error?.value?.statusCode === 401) {
-    resetAuth();
-    navigateTo('/login');
+    authStore.resetAuth();
+    navigateTo("/login");
   }
 
   return response;
