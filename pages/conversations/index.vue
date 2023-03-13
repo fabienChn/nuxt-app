@@ -37,6 +37,8 @@ const users = ref();
 async function fetchConversations() {
   const { data } = await useRequest("conversations");
 
+  // @TODO: to remove
+  console.log({ data: data.value });
   return data;
 }
 
@@ -64,9 +66,7 @@ async function createConversation(userId) {
     },
   });
 
-  alert("clicking!");
   if (data?.value) {
-    alert("redirecting!");
     navigateToConversation(data?.value?.id);
   }
 }

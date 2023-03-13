@@ -1,0 +1,84 @@
+{
+  "data": [
+    {
+      "created_at": "2023-03-09T15:00:41.519Z",
+      "id": 1,
+      "messages": [
+        {
+          "conversation_id": 1,
+          "created_at": "2023-03-10T22:00:44.373Z",
+          "id": 28,
+          "is_liked": false,
+          "text": "message-20230310230043",
+          "updated_at": "2023-03-10T22:00:44.373Z",
+          "user_id": 1
+        }
+      ],
+      "updated_at": "2023-03-09T15:00:41.519Z",
+      "users": [
+        {
+          "conversation_id": 1,
+          "user": {
+            "created_at": "2023-03-09T15:00:41.509Z",
+            "email": "elisa@gmail.com",
+            "id": 2,
+            "name": "Elisa",
+            "updated_at": "2023-03-09T15:00:41.509Z"
+          },
+          "user_id": 2
+        },
+        {
+          "conversation_id": 1,
+          "user": {
+            "created_at": "2023-03-09T15:00:41.509Z",
+            "email": "fabien@gmail.com",
+            "id": 1,
+            "name": "Fabien",
+            "updated_at": "2023-03-09T15:00:41.509Z"
+          },
+          "user_id": 1
+        }
+      ]
+    },
+    {
+      "created_at": "2023-03-09T15:00:41.533Z",
+      "id": 2,
+      "messages": [
+        {
+          "conversation_id": 2,
+          "created_at": "2023-03-09T15:00:41.556Z",
+          "id": 6,
+          "is_liked": false,
+          "text": "Hi mein Son!",
+          "updated_at": "2023-03-09T15:00:41.556Z",
+          "user_id": 3
+        }
+      ],
+      "updated_at": "2023-03-09T15:00:41.533Z",
+      "users": [
+        {
+          "conversation_id": 2,
+          "user": {
+            "created_at": "2023-03-09T15:00:41.509Z",
+            "email": "steffi@gmail.com",
+            "id": 3,
+            "name": "Steffi",
+            "updated_at": "2023-03-09T15:00:41.509Z"
+          },
+          "user_id": 3
+        },
+        {
+          "conversation_id": 2,
+          "user": {
+            "created_at": "2023-03-09T15:00:41.509Z",
+            "email": "fabien@gmail.com",
+            "id": 1,
+            "name": "Fabien",
+            "updated_at": "2023-03-09T15:00:41.509Z"
+          },
+          "user_id": 1
+        }
+      ]
+    }
+  ]
+}

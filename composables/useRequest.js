@@ -1,6 +1,12 @@
 export default async function useRequest(path, options = {}) {
   const { apiUrl } = useRuntimeConfig().public;
+
   const authStore = useAuthStore();
+
+  // @TODO: to remove
+  console.log({
+    fetch: `${apiUrl}/${path}`,
+  });
 
   const response = await useFetch(`${apiUrl}/${path}`, {
     credentials: "include",
@@ -17,6 +23,11 @@ export default async function useRequest(path, options = {}) {
     authStore.resetAuth();
     navigateTo("/login");
   }
+
+  // @TODO: to remove
+  console.log({
+    responseData: response?.data?.value,
+  });
 
   return response;
 }

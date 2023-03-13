@@ -1,6 +1,4 @@
-import dayjs from "dayjs";
-
-describe("e2e spec", () => {
+describe("e2e auth", () => {
   it("is not down", () => {
     cy.visit("http://localhost:3000");
   });
@@ -16,6 +14,9 @@ describe("e2e spec", () => {
 
     describe("when logging in", () => {
       it("redirects to the home page", () => {
+        cy.intercept("POST", "auth/signin", { fixture: "auth-signin.json" });
+        cy.intercept("GET", "users/me", { fixture: "users-me.json" });
+
         cy.visit("http://localhost:3000");
         cy.contains("Login").click();
         cy.url().should("match", /login/);
@@ -51,41 +52,11 @@ describe("e2e spec", () => {
       });
     });
 
-    describe("When going to the conversations page", () => {
-      it("renders a list of conversations", () => {
-        cy.visit("http://localhost:3000/conversations");
-
-        cy.get("div.conversation").should("exist");
-      });
-
-      describe("when clicking on a conversation", () => {
-        // @TODO: fix
-        it.skip("opens the conversation", () => {
-          cy.visit("http://localhost:3000/conversations");
-
-          cy.get("div.conversation").first().click();
-
-          cy.url().should("include", "/conversations/1");
-        });
-
-        describe("when writing text inside the conversation and sending it", () => {
-          it("renders in as a new message", () => {
-            cy.visit("http://localhost:3000/conversations/1");
-
-            const text = `message-${dayjs().format("YYYYMMDDHHmmss")}`;
-
-            cy.get("input").wait(50).type(text).type("{enter}");
-            cy.get("[data-test=message]").contains(text).should("exist");
-          });
-        });
-      });
-    });
-
     describe("when hitting the logout button", () => {
       it("logs out and redirects to the home page", () => {
         cy.visit("http://localhost:3000");
 
-        cy.get(".btn").contains("Logout").click();
+        cy.contains("Logout").click();
 
         cy.url().should("match", /login/);
       });

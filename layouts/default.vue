@@ -18,9 +18,9 @@
             {{ authStore.user?.name }}
           </li>
           <li v-if="authStore.isLoggedIn()">
-            <NuxtLink class="btn cursor-pointer" @click="logout"
-              >Logout</NuxtLink
-            >
+            <NuxtLink class="btn cursor-pointer" @click="logout()">
+              Logout
+            </NuxtLink>
           </li>
         </ul>
       </nav>
