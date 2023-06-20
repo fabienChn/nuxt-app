@@ -16,7 +16,7 @@ input {
 
 @layer components {
   .btn {
-    @apply bg-[green] text-white px-3 py-2 rounded-md text-sm text-white;
+    @apply bg-[green] text-white px-3 py-2 rounded-md text-sm;
   }
 
   .card {
