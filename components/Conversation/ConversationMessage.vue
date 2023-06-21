@@ -13,7 +13,11 @@
       }"
     >
       <p>{{ message.text }}</p>
-      <conversation-message-like-button :is-liked="message.is_liked" />
+      <conversation-message-like-button
+        :is-liked="message.is_liked"
+        :is-from-auth="isFromAuth"
+        @click="emit('toggleIsLiked')"
+      />
     </div>
   </div>
 </template>
@@ -21,6 +25,8 @@
 <script setup>
 const authStore = useAuthStore();
 const { $dayjs } = useNuxtApp();
+
+const emit = defineEmits(["toggleIsLiked"]);
 
 const props = defineProps({
   message: {

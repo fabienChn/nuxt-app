@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="props.isLiked || !props.isFromAuth"
     class="cursor-pointer absolute top-[80%] bg-white p-1 rounded-2xl right-1 leading-[0] align-middle shadow"
   >
     <font-awesome-icon
@@ -21,6 +22,10 @@
 <script setup>
 const props = defineProps({
   isLiked: {
+    type: Boolean,
+    required: true,
+  },
+  isFromAuth: {
     type: Boolean,
     required: true,
   },

@@ -2,7 +2,7 @@
   <div>
     <h2 class="title">
       <NuxtLink to="/conversations" class="mr-2">
-        {{ `<` }}
+        <font-awesome-icon :icon="['fas', 'chevron-left']" />
       </NuxtLink>
       Messages with {{ interlocutorName }}
     </h2>
@@ -12,6 +12,7 @@
         v-for="message in messages"
         :key="message"
         :message="message"
+        @toggle-is-liked="toggleIsLiked(message)"
       />
     </div>
 
@@ -68,5 +69,28 @@ async function fetchMessages() {
   });
 
   return data;
+}
+
+async function toggleIsLiked(message) {
+  const { data } = await useRequest(`messages/${message.id}`, {
+    method: "PATCH",
+    body: {
+      isLiked: !message.is_liked,
+    },
+  });
+
+  Object.assign(
+    messages.value,
+    messages.value.map((msg) => {
+      if (msg.id !== message.id) {
+        return msg;
+      }
+
+      return {
+        ...msg,
+        is_liked: data.value.is_liked,
+      };
+    })
+  );
 }
 </script>
