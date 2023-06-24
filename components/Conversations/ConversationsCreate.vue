@@ -1,6 +1,12 @@
 <template>
   <div>
-    <button class="btn" @click="toggleUsers">New Conversation</button>
+    <input
+      v-model="searchInput"
+      class="rounded"
+      placeholder="New Conversation"
+      @focus="toggleUsers"
+      @update:modelValue="toggleUsers"
+    />
 
     <div
       v-for="user in users"
@@ -15,21 +21,21 @@
 
 <script setup>
 const users = ref();
+const searchInput = ref();
 
 const emit = defineEmits(["created"]);
 
 function toggleUsers() {
-  if (users?.value?.length) {
-    users.value = null;
-
-    return;
-  }
-
   initUsers();
 }
 
 async function initUsers() {
-  const { data } = await useRequest("users/new-conversation");
+  // @todo: to fix
+  const { data } = await useRequest("users/new-conversation", {
+    query: { name: searchInput },
+  });
+
+  console.log(data.value);
 
   users.value = data.value;
 }
