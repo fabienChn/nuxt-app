@@ -11,8 +11,7 @@ frontend:
         - yarn prod-serve
   artifacts:
     # IMPORTANT - Please verify your build output directory
-    #baseDirectory: /
-    baseDirectory: /dist/
+    baseDirectory: /
     files:
       - '**/*'
   cache:
