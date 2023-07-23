@@ -6,7 +6,7 @@
     :class="{ 'justify-end': isFromAuth }"
   >
     <div
-      class="border-2 p-3 rounded-lg relative"
+      class="border-2 p-3 rounded-lg relative max-w-[90%]"
       :class="{
         'rounded-tl-none': !isFromAuth,
         'rounded-tr-none bg-[green]': isFromAuth,

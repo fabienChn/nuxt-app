@@ -7,7 +7,14 @@
       Messages with {{ interlocutorName }}
     </h2>
 
-    <div class="flex flex-col gap-3 mb-3 pb-3 max-h-[80vh] overflow-y-scroll">
+    <div
+      ref="messagesContainer"
+      class="flex flex-col gap-3 mb-3 pb-3 h-[calc(100vh-210px)] overflow-y-scroll"
+    >
+      <div v-if="!hasLoadedAllPages" class="flex justify-center">
+        <button class="btn mb-10" @click="loadMore()">Load More</button>
+      </div>
+
       <conversation-message
         v-for="message in messages"
         :key="message"
@@ -23,9 +30,16 @@
 <script setup>
 const authStore = useAuthStore();
 const { id } = useRoute().params;
+const messagesContainer = ref();
+const pagesLoadedCount = ref(1);
+const hasLoadedAllPages = ref(false);
 
 const conversation = await fetchConversation();
 const messages = await fetchMessages();
+
+if (messages.value?.length < 10) {
+  hasLoadedAllPages.value = true;
+}
 
 const { $socketioClient } = useNuxtApp();
 const { io } = $socketioClient;
@@ -39,6 +53,10 @@ const socket = io(apiUrl, {
 
 socket.on("message", (message) => {
   messages.value.push(message);
+
+  setTimeout(() => {
+    scrollMessagesContainerTo(messagesContainer.value.scrollHeight);
+  }, 50);
 });
 
 function sendMessage(inputValue) {
@@ -48,12 +66,20 @@ function sendMessage(inputValue) {
   });
 }
 
+setTimeout(() => {
+  scrollMessagesContainerTo(messagesContainer.value.scrollHeight);
+}, 50);
+
 const interlocutorName = computed(() => {
   const authId = authStore.user?.id;
 
   return conversation?.value?.users?.find((user) => user?.user_id !== authId)
     ?.user?.name;
 });
+
+function scrollMessagesContainerTo(value) {
+  messagesContainer.value.scrollTop = value;
+}
 
 async function fetchConversation() {
   const { data } = await useRequest(`conversations/${id}`, {
@@ -63,9 +89,10 @@ async function fetchConversation() {
   return data;
 }
 
-async function fetchMessages() {
+async function fetchMessages(page = 1) {
   const { data } = await useRequest(`messages/${id}`, {
-    key: `messages-${id}`,
+    key: `messages-${id}-${Date.now()}`,
+    query: { page },
   });
 
   return data;
@@ -92,5 +119,30 @@ async function toggleIsLiked(message) {
       };
     })
   );
+}
+
+async function loadMore() {
+  pagesLoadedCount.value = pagesLoadedCount.value + 1;
+
+  const olderMessages = await fetchMessages(pagesLoadedCount);
+
+  if (olderMessages.value.length === 0) {
+    return;
+  }
+
+  if (olderMessages.value.length < 10) {
+    hasLoadedAllPages.value = true;
+  }
+
+  const boxHeightBeforeLoadingOlderMessages =
+    messagesContainer.value.scrollHeight;
+
+  messages.value = olderMessages.value.concat(messages.value);
+
+  setTimeout(() => {
+    scrollMessagesContainerTo(
+      messagesContainer.value.scrollHeight - boxHeightBeforeLoadingOlderMessages
+    );
+  }, 50);
 }
 </script>

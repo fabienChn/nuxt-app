@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="props.isLiked || !props.isFromAuth"
-    class="cursor-pointer absolute top-[80%] bg-white p-1 rounded-2xl right-1 leading-[0] align-middle shadow"
+    class="cursor-pointer absolute bottom-[-10px] bg-white p-1 rounded-2xl right-1 leading-[0] align-middle shadow"
   >
     <font-awesome-icon
       v-if="props.isLiked"
