@@ -35,8 +35,6 @@ async function initUsers() {
     query: { name: searchInput },
   });
 
-  console.log(data.value);
-
   users.value = data.value;
 }
 
