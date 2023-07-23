@@ -7,12 +7,11 @@ frontend:
     build:
       commands:
         - echo "API_URL=$API_URL" >> .env
-        #- yarn run build
-        - yarn generate
+        - yarn build
   artifacts:
     # IMPORTANT - Please verify your build output directory
     #baseDirectory: /
-    baseDirectory: dist
+    baseDirectory: /dist/
     files:
       - '**/*'
   cache:
