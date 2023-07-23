@@ -10,12 +10,12 @@ frontend:
         - yarn build
   artifacts:
     # IMPORTANT - Please verify your build output directory
-    baseDirectory: /
+    baseDirectory: /.output/public/
     files:
       - '**/*'
   cache:
     paths:
       - node_modules/**/*
-start:
-  commands:
-    - yarn prod-serve
+# start:
+#   commands:
+#     - yarn prod-serve
