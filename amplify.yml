@@ -16,6 +16,6 @@ frontend:
   cache:
     paths:
       - node_modules/**/*
-  start:
-    commands:
-      - yarn prod-serve
+start:
+  commands:
+    - yarn prod-serve
